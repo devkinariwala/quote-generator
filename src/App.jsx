@@ -12,12 +12,15 @@ function App() {
 
   const fetchQuotes = async () => {
     try {
+      const res = await fetch("https://type.fit/api/quotes");
+      const data = await res.json(); // this is an array of quotes
+
       const fetchedQuotes = [];
 
       for (let i = 0; i < count; i++) {
-        const res = await fetch("https://type.fit/api/quotes");
-        const data = await res.json();
-        fetchedQuotes.push({ content: data.content, author: data.author });
+        const randomIndex = Math.floor(Math.random() * data.length);
+        const quote = data[randomIndex];
+        fetchedQuotes.push({ content: quote.text, author: quote.author });
       }
 
       setQuoteDataList(fetchedQuotes);
