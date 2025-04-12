@@ -12,16 +12,18 @@ function App() {
 
   const fetchQuotes = async () => {
     try {
-      const res = await fetch("https://type.fit/api/quotes");
-      const data = await res.json(); // this is an array of quotes
-
       const fetchedQuotes = [];
 
-      for (let i = 0; i < count; i++) {
-        const randomIndex = Math.floor(Math.random() * data.length);
-        const quote = data[randomIndex];
-        fetchedQuotes.push({ content: quote.text, author: quote.author });
-      }
+      // Fetch 1 quote N times — still makes N API calls, but guaranteed fresh
+      const promises = Array.from({ length: count }, () =>
+        fetch("https://api.quotable.io/random").then((res) => res.json())
+      );
+
+      const results = await Promise.all(promises);
+
+      results.forEach((quote) =>
+        fetchedQuotes.push({ content: quote.content, author: quote.author })
+      );
 
       setQuoteDataList(fetchedQuotes);
     } catch (error) {
