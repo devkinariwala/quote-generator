@@ -15,7 +15,7 @@ function App() {
       const fetchedQuotes = [];
 
       for (let i = 0; i < count; i++) {
-        const res = await fetch("https://api.quotable.io/random");
+        const res = await fetch("https://type.fit/api/quotes");
         const data = await res.json();
         fetchedQuotes.push({ content: data.content, author: data.author });
       }
